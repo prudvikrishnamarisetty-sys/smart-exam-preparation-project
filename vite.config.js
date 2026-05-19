@@ -14,3 +14,7 @@ export default defineConfig({
     }
   }
 })
+export default defineConfig({
+  base: "/smart-exam-preparation-project/",
+  plugins: [react()],
+});
