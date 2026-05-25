@@ -84,9 +84,28 @@ def seed_admin():
     finally:
         db.close()
 
+def auto_seed_if_empty():
+    from database import SessionLocal
+    import models
+    db = SessionLocal()
+    try:
+        count = db.query(models.ExamConfig).count()
+        if count == 0:
+            print("[Startup] Database is empty. Running auto-seed scripts...")
+            import subprocess
+            import sys
+            subprocess.run([sys.executable, "seed_exam_configs.py"], check=True)
+            subprocess.run([sys.executable, "seed_questions.py"], check=True)
+            print("[Startup] Auto-seeding completed.")
+    except Exception as e:
+        print(f"[Startup] Error during auto-seeding: {e}")
+    finally:
+        db.close()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     seed_admin()
+    auto_seed_if_empty()
     yield
 
 
