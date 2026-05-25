@@ -137,6 +137,20 @@ Return a JSON array of objects with keys: text, option_a, option_b, option_c, op
                     if "question" in q and "text" not in q: q["text"] = q.pop("question")
                     elif "question_text" in q and "text" not in q: q["text"] = q.pop("question_text")
                     
+                    # Normalize correct_option to A, B, C, or D (handles 'option_a', 'a', etc.)
+                    cop = str(q.get("correct_option", "")).strip().upper()
+                    if "A" in cop or cop == "OPTION_A":
+                        q["correct_option"] = "A"
+                    elif "B" in cop or cop == "OPTION_B":
+                        q["correct_option"] = "B"
+                    elif "C" in cop or cop == "OPTION_C":
+                        q["correct_option"] = "C"
+                    elif "D" in cop or cop == "OPTION_D":
+                        q["correct_option"] = "D"
+                    else:
+                        # Fallback default if parsing fails
+                        q["correct_option"] = "A"
+
                     required = {"text", "option_a", "option_b", "option_c", "option_d", "correct_option"}
                     text = str(q.get("text", "")).strip()
                     if (

@@ -18,6 +18,8 @@ Base.metadata.create_all(bind=engine)
 def _run_migrations():
     import sqlite3
     db_path = os.path.join(os.path.dirname(__file__), "exam.db")
+    if not os.environ.get("DATABASE_URL", "sqlite").startswith("sqlite"):
+        return
     if not os.path.exists(db_path):
         return
     conn = sqlite3.connect(db_path)
@@ -47,10 +49,6 @@ def _run_migrations():
     for col, sql in res_migrations.items():
         if col not in res_cols:
             print(f"[Migration] Adding column '{col}' to resources table")
-            cursor.execute(sql)
-    for col, sql in migrations.items():
-        if col not in cols:
-            print(f"[Migration] Adding column '{col}' to users table")
             cursor.execute(sql)
     conn.commit()
     conn.close()
@@ -148,6 +146,11 @@ if os.path.isdir("dist"):
 
 if __name__ == "__main__":
     import uvicorn
-    host = os.environ.get("HOST", "0.0.0.0")
+    # Default to 127.0.0.1 on Windows — browsers cannot reach 0.0.0.0 on Windows.
+    # Set HOST=0.0.0.0 in your .env only if you need network-wide access.
+    default_host = "127.0.0.1" if os.name == "nt" else "0.0.0.0"
+    host = os.environ.get("HOST", default_host)
     port = int(os.environ.get("PORT", 8000))
+    print(f"\n🚀 Backend running at: http://{host}:{port}")
+    print(f"   API docs available: http://{host}:{port}/docs\n")
     uvicorn.run("main:app", host=host, port=port, reload=False)
