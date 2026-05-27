@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { api } from './api/client';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -70,7 +70,7 @@ export default function App() {
     setUser(data.user);
   };
 
-  const handleLogout = () => { localStorage.clear(); setUser(null); window.location.href = '/login'; };
+  const handleLogout = () => { localStorage.clear(); setUser(null); window.location.href = window.location.pathname + '#/login'; };
 
   if (loading) return <div className="loader"><div className="spinner"></div></div>;
 
