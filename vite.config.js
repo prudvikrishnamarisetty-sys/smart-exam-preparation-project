@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: "/",
+  base: "/smart-exam-preparation-project/",
   plugins: [react()],
   build: {
     outDir: 'dist',
