@@ -170,6 +170,6 @@ if __name__ == "__main__":
     default_host = "127.0.0.1" if os.name == "nt" else "0.0.0.0"
     host = os.environ.get("HOST", default_host)
     port = int(os.environ.get("PORT", 8000))
-    print(f"\n🚀 Backend running at: http://{host}:{port}")
+    print(f"\n[Backend] running at: http://{host}:{port}")
     print(f"   API docs available: http://{host}:{port}/docs\n")
     uvicorn.run("main:app", host=host, port=port, reload=False)

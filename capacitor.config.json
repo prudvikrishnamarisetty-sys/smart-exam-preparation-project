@@ -1,0 +1,9 @@
+{
+  "appId": "com.smartexam.app",
+  "appName": "Smart Exam Prep",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "http"
+  }
+}

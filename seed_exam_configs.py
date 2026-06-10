@@ -91,22 +91,6 @@ cfg("GATE_CSE", "GATE Computer Science", "GOVT_IT",
      {"name":"Core CS — 2 mark Qs","questions":30,"marks_per_q":2,"negative":0.67}],
     "🖥️", "GATE CS — 65 Qs, 100 Marks, 3 hrs, Variable negative marking")
 
-cfg("NIC_SCI_OFFICER", "NIC Scientific Officer", "GOVT_IT",
-    120, 120, 120, 0.25, 1.0,
-    [{"name":"Quantitative Aptitude","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"Reasoning","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"English","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"General Awareness","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"IT & Computer Science","questions":40,"marks_per_q":1,"negative":0.25}],
-    "🏢", "NIC Scientific Officer — 120 Qs, 120 Marks, 120 min, -0.25 per wrong")
-
-cfg("IBPS_SO_IT", "IBPS SO IT Officer", "GOVT_IT",
-    75, 75, 45, 0.25, 1.0,
-    [{"name":"Reasoning","questions":25,"marks_per_q":1,"negative":0.25},
-     {"name":"English Language","questions":25,"marks_per_q":1,"negative":0.25},
-     {"name":"IT Knowledge","questions":25,"marks_per_q":1,"negative":0.25}],
-    "🏦", "IBPS SO IT Officer Prelims — 75 Qs, 75 Marks, 45 min, -0.25 per wrong")
-
 cfg("RRB_JE_IT", "RRB JE IT", "GOVT_IT",
     100, 100, 90, 0.33, 1.0,
     [{"name":"Mathematics","questions":30,"marks_per_q":1,"negative":0.33},
@@ -128,8 +112,55 @@ cfg("DRDO_CEPTAM", "DRDO CEPTAM Tech-A IT", "GOVT_IT",
      {"name":"IT & Computer Science","questions":50,"marks_per_q":1,"negative":0.5}],
     "🛡️", "DRDO CEPTAM Tech-A IT — 150 Qs, 150 Marks, 150 min, -0.50 per wrong")
 
-# ── B.TECH LANGUAGE / TECH EXAMS ─────────────────────────────────────────────
-cfg("JAVA_OCJP", "Java OCJP/OCP", "BTECH_LANG",
+# ── PYTHON EXAMS ──────────────────────────────────────────────────────────────
+cfg("PYTHON_PCEP", "Python PCEP (Entry Level)", "PROGRAMMING",
+    30, 30, 45, 0.0, 1.0,
+    [{"name":"Basics & Control Flow","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Functions & Modules","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Data Structures","questions":10,"marks_per_q":1,"negative":0}],
+    "🐍", "Python PCEP Entry — 30 Qs, 30 Marks, 45 min, No negative marking")
+
+cfg("PYTHON_PCAP", "Python PCAP (Associate)", "PROGRAMMING",
+    40, 40, 65, 0.0, 1.0,
+    [{"name":"Modules & Packages","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"OOP in Python","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Exceptions & File I/O","questions":15,"marks_per_q":1,"negative":0}],
+    "🐍", "Python PCAP Associate — 40 Qs, 40 Marks, 65 min, No negative marking")
+
+cfg("PYTHON_BASICS", "Python Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Syntax & Data Types","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Control Flow & Loops","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Functions & Lambda","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Lists, Tuples & Dicts","questions":15,"marks_per_q":1,"negative":0}],
+    "🐍", "Python Fundamentals — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+cfg("PYTHON_OOP", "Python OOP & Advanced", "PROGRAMMING",
+    40, 40, 60, 0.0, 1.0,
+    [{"name":"Classes & Objects","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Inheritance & Polymorphism","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Decorators & Generators","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"File Handling & Exceptions","questions":10,"marks_per_q":1,"negative":0}],
+    "🐍", "Python OOP & Advanced — 40 Qs, 40 Marks, 60 min, No negative marking")
+
+cfg("PYTHON_DATA_SCIENCE", "Python for Data Science", "PROGRAMMING",
+    45, 45, 60, 0.0, 1.0,
+    [{"name":"NumPy & Arrays","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Pandas & DataFrames","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"Matplotlib & Visualization","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Statistics & ML Basics","questions":10,"marks_per_q":1,"negative":0}],
+    "📊", "Python for Data Science — 45 Qs, 45 Marks, 60 min, No negative marking")
+
+cfg("PYTHON_DJANGO", "Python Django Framework", "PROGRAMMING",
+    40, 40, 60, 0.0, 1.0,
+    [{"name":"Django Basics & Setup","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Models & ORM","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Views & URLs","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Templates & Forms","questions":10,"marks_per_q":1,"negative":0}],
+    "🌐", "Python Django — 40 Qs, 40 Marks, 60 min, No negative marking")
+
+# ── JAVA EXAMS ────────────────────────────────────────────────────────────────
+cfg("JAVA_OCJP", "Java OCJP/OCP Certification", "PROGRAMMING",
     60, 60, 75, 0.0, 1.0,
     [{"name":"Java Basics & OOP","questions":20,"marks_per_q":1,"negative":0},
      {"name":"Collections & Generics","questions":15,"marks_per_q":1,"negative":0},
@@ -137,20 +168,114 @@ cfg("JAVA_OCJP", "Java OCJP/OCP", "BTECH_LANG",
      {"name":"Concurrency & Lambdas","questions":10,"marks_per_q":1,"negative":0}],
     "☕", "Java OCJP — 60 Qs, 60 Marks, 75 min, No negative marking")
 
-cfg("PYTHON_PCEP", "Python PCEP", "BTECH_LANG",
-    30, 30, 45, 0.0, 1.0,
-    [{"name":"Basics & Control Flow","questions":10,"marks_per_q":1,"negative":0},
-     {"name":"Functions & Modules","questions":10,"marks_per_q":1,"negative":0},
-     {"name":"Data Structures","questions":10,"marks_per_q":1,"negative":0}],
-    "🐍", "Python PCEP Entry — 30 Qs, 30 Marks, 45 min, No negative marking")
+cfg("JAVA_BASICS", "Java Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Syntax & Data Types","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"OOP Concepts","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"Control Flow & Arrays","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Strings & Methods","questions":13,"marks_per_q":1,"negative":0}],
+    "☕", "Java Fundamentals — 50 Qs, 50 Marks, 60 min, No negative marking")
 
-cfg("PYTHON_PCAP", "Python PCAP", "BTECH_LANG",
-    40, 40, 65, 0.0, 1.0,
-    [{"name":"Modules & Packages","questions":10,"marks_per_q":1,"negative":0},
-     {"name":"OOP in Python","questions":15,"marks_per_q":1,"negative":0},
-     {"name":"Exceptions & File I/O","questions":15,"marks_per_q":1,"negative":0}],
-    "🐍", "Python PCAP Associate — 40 Qs, 40 Marks, 65 min, No negative marking")
+cfg("JAVA_OOP_ADVANCED", "Java OOP & Advanced Concepts", "PROGRAMMING",
+    45, 45, 60, 0.0, 1.0,
+    [{"name":"Inheritance & Interfaces","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Abstract Classes & Polymorphism","questions":11,"marks_per_q":1,"negative":0},
+     {"name":"Exception Handling","questions":11,"marks_per_q":1,"negative":0},
+     {"name":"Inner Classes & Generics","questions":11,"marks_per_q":1,"negative":0}],
+    "☕", "Java OOP & Advanced — 45 Qs, 45 Marks, 60 min, No negative marking")
 
+cfg("JAVA_COLLECTIONS", "Java Collections & Streams", "PROGRAMMING",
+    40, 40, 55, 0.0, 1.0,
+    [{"name":"List, Set & Map","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Iterator & Comparable","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Java 8 Streams & Lambda","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Optional & Functional Interfaces","questions":8,"marks_per_q":1,"negative":0}],
+    "☕", "Java Collections & Streams — 40 Qs, 40 Marks, 55 min, No negative marking")
+
+cfg("JAVA_MULTITHREADING", "Java Multithreading & Concurrency", "PROGRAMMING",
+    35, 35, 50, 0.0, 1.0,
+    [{"name":"Threads & Runnable","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Synchronization","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Executor Framework","questions":8,"marks_per_q":1,"negative":0},
+     {"name":"Locks & Concurrent Collections","questions":7,"marks_per_q":1,"negative":0}],
+    "☕", "Java Multithreading — 35 Qs, 35 Marks, 50 min, No negative marking")
+
+cfg("JAVA_SPRING_BOOT", "Java Spring Boot", "PROGRAMMING",
+    40, 40, 60, 0.0, 1.0,
+    [{"name":"Spring Core & IoC","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Spring Boot Basics","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"REST APIs & Controllers","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Spring Data JPA","questions":10,"marks_per_q":1,"negative":0}],
+    "🍃", "Java Spring Boot — 40 Qs, 40 Marks, 60 min, No negative marking")
+
+# ── C / C++ EXAMS ─────────────────────────────────────────────────────────────
+cfg("C_BASICS", "C Programming Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Syntax & Data Types","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Pointers & Memory","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"Arrays & Strings","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Functions & Structures","questions":13,"marks_per_q":1,"negative":0}],
+    "🔵", "C Programming — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+cfg("CPP_BASICS", "C++ Programming Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"C++ Syntax & Data Types","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"OOP in C++","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"Templates & STL","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"File I/O & Exception Handling","questions":12,"marks_per_q":1,"negative":0}],
+    "⚙️", "C++ Programming — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+cfg("CPP_STL", "C++ STL & Advanced", "PROGRAMMING",
+    40, 40, 55, 0.0, 1.0,
+    [{"name":"Vectors & Lists","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Maps & Sets","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Algorithms & Iterators","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Smart Pointers & Move Semantics","questions":10,"marks_per_q":1,"negative":0}],
+    "⚙️", "C++ STL & Advanced — 40 Qs, 40 Marks, 55 min, No negative marking")
+
+# ── JAVASCRIPT / WEB EXAMS ────────────────────────────────────────────────────
+cfg("JS_BASICS", "JavaScript Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Syntax & Data Types","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Functions & Closures","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"DOM & Events","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"ES6+ Features","questions":13,"marks_per_q":1,"negative":0}],
+    "🟨", "JavaScript Fundamentals — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+cfg("JS_ADVANCED", "JavaScript Advanced & Async", "PROGRAMMING",
+    40, 40, 55, 0.0, 1.0,
+    [{"name":"Promises & Async/Await","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Prototype & Inheritance","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Error Handling & Modules","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Browser APIs & Fetch","questions":8,"marks_per_q":1,"negative":0}],
+    "🟨", "JavaScript Advanced — 40 Qs, 40 Marks, 55 min, No negative marking")
+
+cfg("REACT_JS", "React.js Framework", "PROGRAMMING",
+    40, 40, 55, 0.0, 1.0,
+    [{"name":"React Basics & JSX","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Components & Props","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Hooks & State Management","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Routing & API Integration","questions":10,"marks_per_q":1,"negative":0}],
+    "⚛️", "React.js — 40 Qs, 40 Marks, 55 min, No negative marking")
+
+# ── SQL / DATABASE EXAMS ──────────────────────────────────────────────────────
+cfg("SQL_BASICS", "SQL Fundamentals", "PROGRAMMING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"SELECT & Filtering","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"Joins & Subqueries","questions":13,"marks_per_q":1,"negative":0},
+     {"name":"Aggregations & Grouping","questions":12,"marks_per_q":1,"negative":0},
+     {"name":"DDL & DML Commands","questions":13,"marks_per_q":1,"negative":0}],
+    "🗄️", "SQL Fundamentals — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+cfg("SQL_ADVANCED", "SQL Advanced & Optimization", "PROGRAMMING",
+    40, 40, 55, 0.0, 1.0,
+    [{"name":"Indexes & Views","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Stored Procedures & Triggers","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Transactions & ACID","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Query Optimization","questions":10,"marks_per_q":1,"negative":0}],
+    "🗄️", "SQL Advanced — 40 Qs, 40 Marks, 55 min, No negative marking")
+
+# ── DSA ───────────────────────────────────────────────────────────────────────
 cfg("DSA_PRACTICE", "DSA (Data Structures & Algorithms)", "CORE_CS",
     60, 60, 90, 0.0, 1.0,
     [{"name":"Arrays & Strings","questions":15,"marks_per_q":1,"negative":0},
@@ -255,61 +380,6 @@ cfg("COGNIZANT_GENC", "Cognizant GenC", "COMPANY",
      {"name":"Quantitative Aptitude","questions":20,"marks_per_q":1,"negative":0}],
     "🎯", "Cognizant GenC — 70 Qs, 70 Marks, 70 min, No negative marking")
 
-# ── BANKING EXAMS ─────────────────────────────────────────────────────────────
-cfg("IBPS_PO_PRELIMS", "IBPS PO Prelims", "BANKING",
-    100, 100, 60, 1.0, 1.0,
-    [{"name":"English Language","questions":30,"marks_per_q":1,"negative":1.0},
-     {"name":"Quantitative Aptitude","questions":35,"marks_per_q":1,"negative":1.0},
-     {"name":"Reasoning Ability","questions":35,"marks_per_q":1,"negative":1.0}],
-    "🏦", "IBPS PO Prelims — 100 Qs, 100 Marks, 60 min, -1.00 per wrong")
-
-cfg("IBPS_PO_MAINS", "IBPS PO Mains", "BANKING",
-    155, 200, 180, 0.25, 1.0,
-    [{"name":"Reasoning & Computer Aptitude","questions":45,"marks_per_q":1,"negative":0.25},
-     {"name":"English Language","questions":35,"marks_per_q":1,"negative":0.25},
-     {"name":"Data Analysis & Interpretation","questions":35,"marks_per_q":1,"negative":0.25},
-     {"name":"General Economy & Banking Awareness","questions":40,"marks_per_q":1,"negative":0.25}],
-    "🏦", "IBPS PO Mains — 155 Qs, 200 Marks, 180 min, -0.25 per wrong")
-
-cfg("IBPS_CLERK_PRELIMS", "IBPS Clerk Prelims", "BANKING",
-    100, 100, 60, 1.0, 1.0,
-    [{"name":"English Language","questions":30,"marks_per_q":1,"negative":1.0},
-     {"name":"Numerical Ability","questions":35,"marks_per_q":1,"negative":1.0},
-     {"name":"Reasoning Ability","questions":35,"marks_per_q":1,"negative":1.0}],
-    "🏦", "IBPS Clerk Prelims — 100 Qs, 100 Marks, 60 min, -1.00 per wrong")
-
-cfg("SBI_PO_PRELIMS", "SBI PO Prelims", "BANKING",
-    100, 100, 60, 0.25, 1.0,
-    [{"name":"English Language","questions":30,"marks_per_q":1,"negative":0.25},
-     {"name":"Quantitative Aptitude","questions":35,"marks_per_q":1,"negative":0.25},
-     {"name":"Reasoning Ability","questions":35,"marks_per_q":1,"negative":0.25}],
-    "🏛️", "SBI PO Prelims — 100 Qs, 100 Marks, 60 min, -0.25 per wrong")
-
-cfg("SBI_CLERK_PRELIMS", "SBI Clerk Prelims (Junior Associate)", "BANKING",
-    100, 100, 60, 0.25, 1.0,
-    [{"name":"English Language","questions":30,"marks_per_q":1,"negative":0.25},
-     {"name":"Numerical Ability","questions":35,"marks_per_q":1,"negative":0.25},
-     {"name":"Reasoning Ability","questions":35,"marks_per_q":1,"negative":0.25}],
-    "🏛️", "SBI Clerk Prelims — 100 Qs, 100 Marks, 60 min, -0.25 per wrong")
-
-cfg("RBI_GRADE_B", "RBI Grade B Officer Phase-1", "BANKING",
-    200, 200, 120, 0.25, 1.0,
-    [{"name":"General Awareness","questions":80,"marks_per_q":1,"negative":0.25},
-     {"name":"English Language","questions":30,"marks_per_q":1,"negative":0.25},
-     {"name":"Quantitative Aptitude","questions":30,"marks_per_q":1,"negative":0.25},
-     {"name":"Reasoning","questions":60,"marks_per_q":1,"negative":0.25}],
-    "💰", "RBI Grade B Phase-1 — 200 Qs, 200 Marks, 120 min, -0.25 per wrong")
-
-cfg("NABARD_GRADE_A", "NABARD Grade A Prelims", "BANKING",
-    200, 200, 120, 0.25, 1.0,
-    [{"name":"Reasoning","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"English Language","questions":40,"marks_per_q":1,"negative":0.25},
-     {"name":"Computer Knowledge","questions":20,"marks_per_q":1,"negative":0.25},
-     {"name":"General Awareness","questions":40,"marks_per_q":1,"negative":0.25},
-     {"name":"Quantitative Aptitude","questions":40,"marks_per_q":1,"negative":0.25},
-     {"name":"Economic & Social Issues","questions":40,"marks_per_q":1,"negative":0.25}],
-    "🌾", "NABARD Grade A Prelims — 200 Qs, 200 Marks, 120 min, -0.25 per wrong")
-
 # ── RAILWAY EXAMS ─────────────────────────────────────────────────────────────
 cfg("RRB_NTPC_CBT1", "RRB NTPC CBT-1", "RAILWAY",
     100, 100, 90, 0.33, 1.0,
@@ -341,19 +411,6 @@ cfg("RRB_ALP_STAGE1", "RRB ALP Stage-1", "RAILWAY",
      {"name":"General Awareness on Current Affairs","questions":10,"marks_per_q":1,"negative":0.33}],
     "🚄", "RRB ALP Stage-1 — 75 Qs, 75 Marks, 60 min, -0.33 per wrong")
 
-cfg("RRB_ALP_STAGE2_PARTA", "RRB ALP Stage-2 Part-A (CBT)", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"Mathematics","questions":25,"marks_per_q":1,"negative":0.33},
-     {"name":"General Intelligence & Reasoning","questions":25,"marks_per_q":1,"negative":0.33},
-     {"name":"Basic Science & Engineering","questions":40,"marks_per_q":1,"negative":0.33},
-     {"name":"General Awareness on Current Affairs","questions":10,"marks_per_q":1,"negative":0.33}],
-    "🚄", "RRB ALP Stage-2 Part-A — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
-cfg("RRB_ALP_STAGE2_PARTB", "RRB ALP Stage-2 Part-B (Trade Syllabus)", "RAILWAY",
-    75, 75, 60, 0.0, 1.0,
-    [{"name":"Trade-Specific Technical Questions","questions":75,"marks_per_q":1,"negative":0}],
-    "🚄", "RRB ALP Stage-2 Part-B — 75 Qs, 75 Marks, 60 min, No negative marking")
-
 cfg("RRB_JE_CIVIL", "RRB JE Civil Engineering", "RAILWAY",
     100, 100, 90, 0.33, 1.0,
     [{"name":"Mathematics","questions":30,"marks_per_q":1,"negative":0.33},
@@ -362,96 +419,12 @@ cfg("RRB_JE_CIVIL", "RRB JE Civil Engineering", "RAILWAY",
      {"name":"Civil Engineering","questions":30,"marks_per_q":1,"negative":0.33}],
     "🏗️", "RRB JE Civil — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
 
-cfg("RRB_JE_MECH", "RRB JE Mechanical Engineering", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"Mathematics","questions":30,"marks_per_q":1,"negative":0.33},
-     {"name":"General Intelligence & Reasoning","questions":25,"marks_per_q":1,"negative":0.33},
-     {"name":"General Awareness","questions":15,"marks_per_q":1,"negative":0.33},
-     {"name":"Mechanical Engineering","questions":30,"marks_per_q":1,"negative":0.33}],
-    "⚙️", "RRB JE Mechanical — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
-cfg("RRB_JE_EEE", "RRB JE Electrical Engineering (EEE)", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"Mathematics","questions":30,"marks_per_q":1,"negative":0.33},
-     {"name":"General Intelligence & Reasoning","questions":25,"marks_per_q":1,"negative":0.33},
-     {"name":"General Awareness","questions":15,"marks_per_q":1,"negative":0.33},
-     {"name":"Electrical Engineering","questions":30,"marks_per_q":1,"negative":0.33}],
-    "⚡", "RRB JE EEE — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
-cfg("RRB_JE_ECE", "RRB JE Electronics & Communication (ECE)", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"Mathematics","questions":30,"marks_per_q":1,"negative":0.33},
-     {"name":"General Intelligence & Reasoning","questions":25,"marks_per_q":1,"negative":0.33},
-     {"name":"General Awareness","questions":15,"marks_per_q":1,"negative":0.33},
-     {"name":"Electronics & Communication","questions":30,"marks_per_q":1,"negative":0.33}],
-    "📡", "RRB JE ECE — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
 cfg("RRB_CONSTABLE_RPF", "RRB RPF Constable", "RAILWAY",
     120, 120, 90, 0.25, 1.0,
     [{"name":"General Awareness / Current Affairs","questions":50,"marks_per_q":1,"negative":0.25},
      {"name":"Arithmetic","questions":35,"marks_per_q":1,"negative":0.25},
      {"name":"General Intelligence & Reasoning","questions":35,"marks_per_q":1,"negative":0.25}],
     "🚔", "RRB RPF Constable — 120 Qs, 120 Marks, 90 min, -0.25 per wrong")
-
-cfg("RRB_SI_RPF", "RRB RPF Sub-Inspector (SI)", "RAILWAY",
-    120, 120, 90, 0.25, 1.0,
-    [{"name":"General Awareness / Current Affairs","questions":50,"marks_per_q":1,"negative":0.25},
-     {"name":"Arithmetic","questions":35,"marks_per_q":1,"negative":0.25},
-     {"name":"General Intelligence & Reasoning","questions":35,"marks_per_q":1,"negative":0.25}],
-    "🚔", "RRB RPF SI — 120 Qs, 120 Marks, 90 min, -0.25 per wrong")
-
-cfg("RRB_PARAMEDICAL", "RRB Paramedical Staff", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"General Awareness","questions":20,"marks_per_q":1,"negative":0.33},
-     {"name":"Mathematics","questions":20,"marks_per_q":1,"negative":0.33},
-     {"name":"General Intelligence & Reasoning","questions":10,"marks_per_q":1,"negative":0.33},
-     {"name":"Professional Knowledge (Medical/Health)","questions":50,"marks_per_q":1,"negative":0.33}],
-    "🏥", "RRB Paramedical — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
-cfg("RRB_MINISTERIAL_ISOLATED", "RRB Ministerial & Isolated Categories", "RAILWAY",
-    100, 100, 90, 0.33, 1.0,
-    [{"name":"General Intelligence & Reasoning","questions":30,"marks_per_q":1,"negative":0.33},
-     {"name":"General Awareness","questions":30,"marks_per_q":1,"negative":0.33},
-     {"name":"Arithmetic","questions":20,"marks_per_q":1,"negative":0.33},
-     {"name":"English Language","questions":20,"marks_per_q":1,"negative":0.33}],
-    "📋", "RRB Ministerial/Isolated — 100 Qs, 100 Marks, 90 min, -0.33 per wrong")
-
-# ── DEFENCE EXAMS ─────────────────────────────────────────────────────────────
-cfg("NDA_MATHS", "NDA Mathematics Paper", "DEFENCE",
-    120, 300, 150, 1.33, 2.5,
-    [{"name":"Algebra","questions":30,"marks_per_q":2.5,"negative":0.83},
-     {"name":"Matrices & Determinants","questions":15,"marks_per_q":2.5,"negative":0.83},
-     {"name":"Calculus","questions":20,"marks_per_q":2.5,"negative":0.83},
-     {"name":"Trigonometry","questions":20,"marks_per_q":2.5,"negative":0.83},
-     {"name":"Statistics & Probability","questions":15,"marks_per_q":2.5,"negative":0.83},
-     {"name":"Vector Algebra","questions":20,"marks_per_q":2.5,"negative":0.83}],
-    "⚔️", "NDA Mathematics — 120 Qs, 300 Marks, 150 min, -0.83 per wrong")
-
-cfg("NDA_GAT", "NDA General Ability Test (GAT)", "DEFENCE",
-    150, 600, 150, 2.0, 4.0,
-    [{"name":"English","questions":50,"marks_per_q":4,"negative":1.33},
-     {"name":"Physics","questions":25,"marks_per_q":4,"negative":1.33},
-     {"name":"Chemistry","questions":15,"marks_per_q":4,"negative":1.33},
-     {"name":"General Science","questions":10,"marks_per_q":4,"negative":1.33},
-     {"name":"History & Geography","questions":30,"marks_per_q":4,"negative":1.33},
-     {"name":"Current Events","questions":20,"marks_per_q":4,"negative":1.33}],
-    "⚔️", "NDA GAT — 150 Qs, 600 Marks, 150 min, -1.33 per wrong")
-
-cfg("CDS_GENERAL_KNOWLEDGE", "CDS General Knowledge", "DEFENCE",
-    120, 100, 120, 0.33, 0.83,
-    [{"name":"Current Events","questions":30,"marks_per_q":0.83,"negative":0.27},
-     {"name":"History","questions":30,"marks_per_q":0.83,"negative":0.27},
-     {"name":"Geography","questions":30,"marks_per_q":0.83,"negative":0.27},
-     {"name":"Science & Technology","questions":30,"marks_per_q":0.83,"negative":0.27}],
-    "🎖️", "CDS General Knowledge — 120 Qs, 100 Marks, 120 min, -0.33 per wrong")
-
-cfg("AFCAT", "AFCAT (Air Force Common Admission Test)", "DEFENCE",
-    100, 300, 120, 1.0, 3.0,
-    [{"name":"General Awareness","questions":30,"marks_per_q":3,"negative":1.0},
-     {"name":"Verbal Ability in English","questions":30,"marks_per_q":3,"negative":1.0},
-     {"name":"Numerical Ability","questions":15,"marks_per_q":3,"negative":1.0},
-     {"name":"Reasoning & Military Aptitude","questions":25,"marks_per_q":3,"negative":1.0}],
-    "✈️", "AFCAT — 100 Qs, 300 Marks, 120 min, -1.00 per wrong")
 
 # ── UPSC EXAMS ────────────────────────────────────────────────────────────────
 cfg("UPSC_PRELIMS_GS1", "UPSC CSE Prelims GS Paper-1", "UPSC",
@@ -542,6 +515,105 @@ cfg("SSC_CPO_TIER1", "SSC CPO (Central Police Organisations) Tier-1", "GOVT_NON_
      {"name":"Quantitative Aptitude","questions":50,"marks_per_q":1,"negative":0.25},
      {"name":"English Comprehension","questions":50,"marks_per_q":1,"negative":0.25}],
     "🚓", "SSC CPO Tier-1 — 200 Qs, 200 Marks, 120 min, -0.25 per wrong")
+
+# ── APTITUDE — TOPIC-WISE EXAMS ───────────────────────────────────────────────
+cfg("APT_NUMBER_SYSTEM", "Aptitude: Number System", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Number System & Divisibility","questions":30,"marks_per_q":1,"negative":0}],
+    "🔢", "Aptitude — Number System: LCM, HCF, Divisibility, Remainders — 30 Qs, 40 min")
+
+cfg("APT_PERCENTAGE", "Aptitude: Percentage", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Percentage & Applications","questions":30,"marks_per_q":1,"negative":0}],
+    "💯", "Aptitude — Percentage: Profit, Loss, Discount applications — 30 Qs, 40 min")
+
+cfg("APT_PROFIT_LOSS", "Aptitude: Profit & Loss", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Profit, Loss & Discount","questions":30,"marks_per_q":1,"negative":0}],
+    "💹", "Aptitude — Profit & Loss: SP, CP, Discount, Marked Price — 30 Qs, 40 min")
+
+cfg("APT_TIME_WORK", "Aptitude: Time & Work", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Time, Work & Pipes","questions":30,"marks_per_q":1,"negative":0}],
+    "⏱️", "Aptitude — Time & Work: Pipes, Cisterns, Worker problems — 30 Qs, 40 min")
+
+cfg("APT_SPEED_DISTANCE", "Aptitude: Speed, Distance & Time", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Speed, Distance & Trains","questions":30,"marks_per_q":1,"negative":0}],
+    "🚆", "Aptitude — Speed & Distance: Trains, Boats, Relative Speed — 30 Qs, 40 min")
+
+cfg("APT_INTEREST", "Aptitude: Simple & Compound Interest", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Simple & Compound Interest","questions":30,"marks_per_q":1,"negative":0}],
+    "🏦", "Aptitude — Interest: SI, CI, Installments — 30 Qs, 40 min")
+
+cfg("APT_RATIO_PROPORTION", "Aptitude: Ratio & Proportion", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Ratio, Proportion & Mixtures","questions":30,"marks_per_q":1,"negative":0}],
+    "⚖️", "Aptitude — Ratio & Proportion: Mixtures, Alligation — 30 Qs, 40 min")
+
+cfg("APT_ALGEBRA", "Aptitude: Algebra & Equations", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Algebra, Equations & Inequalities","questions":30,"marks_per_q":1,"negative":0}],
+    "📐", "Aptitude — Algebra: Linear, Quadratic Equations — 30 Qs, 40 min")
+
+cfg("APT_GEOMETRY", "Aptitude: Geometry & Mensuration", "APTITUDE",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Geometry, Triangles & Mensuration","questions":30,"marks_per_q":1,"negative":0}],
+    "📏", "Aptitude — Geometry: Area, Perimeter, Volume — 30 Qs, 40 min")
+
+cfg("APT_DATA_INTERPRETATION", "Aptitude: Data Interpretation", "APTITUDE",
+    30, 30, 45, 0.0, 1.0,
+    [{"name":"Bar Graph & Line Chart","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Pie Chart & Table","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Caselet & Mixed DI","questions":10,"marks_per_q":1,"negative":0}],
+    "📊", "Aptitude — Data Interpretation: Graphs, Charts, Tables — 30 Qs, 45 min")
+
+cfg("APT_FULL_MOCK", "Aptitude Full Mock Test", "APTITUDE",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Arithmetic & Number System","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Algebra & Geometry","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Data Interpretation","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Miscellaneous Topics","questions":10,"marks_per_q":1,"negative":0}],
+    "🎯", "Aptitude Full Mock — 50 Qs, 50 Marks, 60 min, No negative marking")
+
+# ── REASONING — TOPIC-WISE EXAMS ─────────────────────────────────────────────
+cfg("REASONING_VERBAL", "Reasoning: Verbal Reasoning", "REASONING",
+    40, 40, 50, 0.0, 1.0,
+    [{"name":"Analogy & Classification","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Series & Coding-Decoding","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Syllogism & Blood Relations","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Direction & Ranking","questions":10,"marks_per_q":1,"negative":0}],
+    "🧠", "Reasoning — Verbal: Analogy, Coding, Syllogism, Blood Relations — 40 Qs, 50 min")
+
+cfg("REASONING_NON_VERBAL", "Reasoning: Non-Verbal Reasoning", "REASONING",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Pattern Recognition","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Mirror & Water Images","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Embedded & Counting Figures","questions":10,"marks_per_q":1,"negative":0}],
+    "🔷", "Reasoning — Non-Verbal: Pattern, Mirror, Figures — 30 Qs, 40 min")
+
+cfg("REASONING_LOGICAL", "Reasoning: Logical Reasoning", "REASONING",
+    40, 40, 50, 0.0, 1.0,
+    [{"name":"Statements & Conclusions","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Assumptions & Arguments","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Course of Action","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Logical Deduction","questions":10,"marks_per_q":1,"negative":0}],
+    "💡", "Reasoning — Logical: Statements, Arguments, Deductions — 40 Qs, 50 min")
+
+cfg("REASONING_PUZZLES", "Reasoning: Puzzles & Seating Arrangement", "REASONING",
+    30, 30, 40, 0.0, 1.0,
+    [{"name":"Linear & Circular Seating","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Box, Floor & Complex Puzzles","questions":15,"marks_per_q":1,"negative":0}],
+    "🧩", "Reasoning — Puzzles & Seating Arrangement — 30 Qs, 40 min")
+
+cfg("REASONING_FULL_MOCK", "Reasoning Full Mock Test", "REASONING",
+    50, 50, 60, 0.0, 1.0,
+    [{"name":"Verbal Reasoning","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Non-Verbal Reasoning","questions":10,"marks_per_q":1,"negative":0},
+     {"name":"Logical Reasoning","questions":15,"marks_per_q":1,"negative":0},
+     {"name":"Puzzles & Arrangement","questions":10,"marks_per_q":1,"negative":0}],
+    "🎯", "Reasoning Full Mock — 50 Qs, 50 Marks, 60 min, No negative marking")
 
 db.commit()
 total = db.query(ExamConfig).count()

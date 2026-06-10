@@ -2,20 +2,20 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 
-const EXPECTED_EXAM_COUNT = 63;
+const EXPECTED_EXAM_COUNT = 77;
 
 const CATEGORY_META = {
-  GOVT_IT:      { label: '🏛️ Govt IT Jobs',     desc: 'SSC JE-IT, GATE, NIC, IBPS SO IT, RRB JE, ISRO, DRDO' },
+  PROGRAMMING:  { label: '💻 Programming',       desc: 'Python, Java, C, C++, JavaScript, SQL, React, Spring Boot' },
+  APTITUDE:     { label: '🔢 Aptitude',           desc: 'Number System, Percentage, Profit & Loss, Time & Work, DI, Full Mock' },
+  REASONING:    { label: '🧠 Reasoning',          desc: 'Verbal, Non-Verbal, Logical Reasoning, Puzzles, Full Mock' },
+  CORE_CS:      { label: '📂 Core CS',            desc: 'DSA, DBMS, OS, Computer Networks (GATE Pattern)' },
+  CLOUD_DEVOPS: { label: '☁️ Cloud & DevOps',    desc: 'AWS SAA, Azure AZ-104, GCP ACE, Docker, Kubernetes' },
+  GOVT_IT:      { label: '🏛️ Govt IT Jobs',     desc: 'SSC CGL, GATE CSE, RRB JE IT, ISRO, DRDO' },
   GOVT_NON_IT:  { label: '📝 Govt Non-IT',       desc: 'SSC MTS, GD Constable, SSC CPO' },
-  BANKING:      { label: '🏦 Banking',            desc: 'IBPS PO/Clerk, SBI PO/Clerk, RBI, NABARD' },
-  RAILWAY:      { label: '🚂 Railway',            desc: 'RRB NTPC, Group D, ALP, JE, RPF, Paramedical' },
-  DEFENCE:      { label: '⚔️ Defence',            desc: 'NDA, CDS, AFCAT' },
+  RAILWAY:      { label: '🚂 Railway',            desc: 'RRB NTPC, Group D, ALP, JE, RPF' },
   UPSC:         { label: '🏛️ UPSC',              desc: 'CSE Prelims, CAPF' },
   TEACHING:     { label: '📚 Teaching',           desc: 'CTET Paper 1 & 2, KVS PGT' },
   STATE_PSC:    { label: '🏢 State PSC',          desc: 'APPSC Group-1, TSPSC, MPPSC' },
-  BTECH_LANG:   { label: '💻 B.Tech Languages',   desc: 'Java, Python, C++, JS, SQL, System Design' },
-  CORE_CS:      { label: '🔢 Core CS',            desc: 'DSA, DBMS, OS, Computer Networks' },
-  CLOUD_DEVOPS: { label: '☁️ Cloud & DevOps',    desc: 'AWS SAA, Azure AZ-104, GCP ACE, Docker, Kubernetes' },
   COMPANY:      { label: '🏢 Company Hiring',     desc: 'TCS NQT, Infosys SP, Wipro Elite, Cognizant' },
 };
 
@@ -37,7 +37,7 @@ export default function ExamSelect() {
   const navigate = useNavigate();
   const [configs, setConfigs]           = useState([]);
   const [loading, setLoading]           = useState(true);
-  const [activeCategory, setActiveCategory] = useState('GOVT_IT');
+  const [activeCategory, setActiveCategory] = useState('PROGRAMMING');
   const [modalExam, setModalExam]       = useState(null);
   const [search, setSearch]             = useState('');
   const [missingWarning, setMissingWarning] = useState(false);
@@ -70,7 +70,7 @@ export default function ExamSelect() {
   const categories = useMemo(() => {
     const cats = [...new Set(configs.map(c => c.category))];
     // Sort by a preferred order
-    const ORDER = ['GOVT_IT','GOVT_NON_IT','BANKING','RAILWAY','DEFENCE','UPSC','TEACHING','STATE_PSC','BTECH_LANG','CORE_CS','CLOUD_DEVOPS','COMPANY'];
+    const ORDER = ['PROGRAMMING','APTITUDE','REASONING','CORE_CS','CLOUD_DEVOPS','GOVT_IT','GOVT_NON_IT','RAILWAY','UPSC','TEACHING','STATE_PSC','COMPANY'];
     return cats.sort((a, b) => {
       const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
       if (ia === -1 && ib === -1) return a.localeCompare(b);
