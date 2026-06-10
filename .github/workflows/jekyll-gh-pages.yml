@@ -34,7 +34,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_API_URL: https://smart-exam-preparation-project.onrender.com/api
+          VITE_API_URL: https://prudvi2004-smart-exam-backend.hf.space/api
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
