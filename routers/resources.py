@@ -130,3 +130,22 @@ def fetch_past_papers(
 (Retry in a moment for full 5-year coverage with 15+ questions.)
 """
         return {"exam_type": exam_type, "subject": subject, "topic": "Past 10 Years Papers", "content": fallback_content}
+
+
+@router.post("/requests")
+def create_resource_request(
+    req: dict,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    """Submit a request for exam materials."""
+    new_req = models.ResourceRequest(
+        user_id=current_user.id,
+        exam_type=req.get("exam_type", ""),
+        subject=req.get("subject", ""),
+        topic=req.get("topic", ""),
+        message=req.get("message", ""),
+    )
+    db.add(new_req)
+    db.commit()
+    return {"message": "Request submitted successfully"}

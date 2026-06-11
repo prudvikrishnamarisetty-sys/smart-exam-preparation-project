@@ -46,6 +46,8 @@ export const api = {
   adminUploadResource: (formData) => multipartRequest('/admin/resources/upload', formData),
   adminListResources: () => request('/admin/resources'),
   adminDeleteResource: (id) => request(`/admin/resources/${id}`, { method: 'DELETE' }),
+  adminGetRequests: () => request('/admin/requests'),
+  adminFulfillRequest: (id) => request(`/admin/requests/${id}/fulfill`, { method: 'POST' }),
 
   // Public Resources (uploaded by admin)
   listPublicResources: (params = {}) => {
@@ -78,6 +80,7 @@ export const api = {
   fetchResource: (data) => request('/resources/fetch', { method: 'POST', body: JSON.stringify(data) }),
   fetchPastPapers: (data) => request('/resources/past-papers', { method: 'POST', body: JSON.stringify(data) }),
   getExamSubjects: (examType) => request(`/resources/exam-subjects?exam_type=${examType}`),
+  requestResource: (data) => request('/resources/requests', { method: 'POST', body: JSON.stringify(data) }),
 
   // AI
   explainQuestion: (data) => request('/ai/explain', { method: 'POST', body: JSON.stringify(data) }),

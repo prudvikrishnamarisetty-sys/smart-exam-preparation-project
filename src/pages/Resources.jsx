@@ -20,11 +20,11 @@ function ResourceCard({ resource }) {
         <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>{icons[resource.file_type] || '📎'}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>{resource.title}</div>
-          {resource.exam_name && (
+          {(resource.exam_name || resource.exam_type) && (
             <span style={{
               display: 'inline-block', fontSize: '0.72rem', background: 'rgba(56,189,248,0.12)',
               color: 'var(--accent)', padding: '0.15rem 0.45rem', borderRadius: '0.3rem', margin: '0.25rem 0',
-            }}>{resource.exam_name}</span>
+            }}>{resource.exam_name || resource.exam_type}</span>
           )}
           {resource.subject && <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>📚 {resource.subject}</div>}
 
@@ -144,6 +144,13 @@ export default function Resources() {
   const [resLoading, setResLoading]         = useState(false);
   const [hasSearched, setHasSearched]       = useState(false);
 
+  // Request Material
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [reqSubject, setReqSubject] = useState('');
+  const [reqTopic, setReqTopic] = useState('');
+  const [reqMessage, setReqMessage] = useState('');
+  const [reqSubmitting, setReqSubmitting] = useState(false);
+
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -211,6 +218,29 @@ export default function Resources() {
         setUploadedResources(results);
       } catch { setUploadedResources([]); }
       finally { setResLoading(false); }
+    }
+  };
+
+  const handleRequestSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedExam) return alert("Please select an exam before requesting material.");
+    setReqSubmitting(true);
+    try {
+      await api.requestResource({
+        exam_type: selectedExam,
+        subject: reqSubject,
+        topic: reqTopic,
+        message: reqMessage
+      });
+      alert("Request submitted successfully! The admin will review it.");
+      setShowRequestModal(false);
+      setReqSubject('');
+      setReqTopic('');
+      setReqMessage('');
+    } catch (err) {
+      alert(err.message || 'Failed to submit request');
+    } finally {
+      setReqSubmitting(false);
     }
   };
 
@@ -325,6 +355,14 @@ export default function Resources() {
             ☝️ Select an exam above to enable search.
           </p>
         )}
+
+        {/* Request Material Button */}
+        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Cannot find what you need?</span>
+          <button className="btn btn-secondary btn-sm" onClick={() => { if(!selectedExam) alert("Select an exam first"); else setShowRequestModal(true); }}>
+            📝 Request Exam Material
+          </button>
+        </div>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
@@ -408,6 +446,33 @@ export default function Resources() {
             </div>
           </div>
           <div style={{ lineHeight: 1.8 }}><MarkdownRenderer content={content} /></div>
+        </div>
+      )}
+
+      {/* Request Modal */}
+      {showRequestModal && (
+        <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, padding: '1rem' }}>
+          <div className="card fade-in" style={{ width: '100%', maxWidth: 500, padding: '2rem' }}>
+            <h3 style={{ marginBottom: '1rem' }}>Request Material for {examLabel}</h3>
+            <form onSubmit={handleRequestSubmit}>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Subject</label>
+                <input value={reqSubject} onChange={e => setReqSubject(e.target.value)} placeholder="e.g. DBMS, Quant, History" required />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Topic</label>
+                <input value={reqTopic} onChange={e => setReqTopic(e.target.value)} placeholder="e.g. Normalization, Averages" />
+              </div>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.4rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Additional Details / Message</label>
+                <textarea rows={3} value={reqMessage} onChange={e => setReqMessage(e.target.value)} placeholder="Explain what exactly you need..." style={{ width: '100%', background: 'var(--bg-input)', color: 'white', border: '1px solid var(--border)', borderRadius: '0.4rem', padding: '0.8rem' }} />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowRequestModal(false)} disabled={reqSubmitting}>Cancel</button>
+                <button type="submit" className="btn btn-primary" disabled={reqSubmitting}>{reqSubmitting ? 'Submitting...' : 'Submit Request'}</button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

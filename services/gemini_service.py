@@ -106,8 +106,17 @@ def _call_gemini(prompt: str, max_retries: int = 5, is_json: bool = False) -> st
     raise RuntimeError(f"Gemini generation failed. Last error: {last_err}")
 
 def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
-    """Default text engine: uses Groq for speed."""
-    return _call_groq(prompt, max_retries, is_json)
+    """Default text engine: uses Groq for speed, falls back to Gemini."""
+    if GROQ_API_KEY:
+        try:
+            return _call_groq(prompt, max_retries=2, is_json=is_json)
+        except Exception as e:
+            print(f"[_call] Groq failed or busy: {e}. Falling back to Gemini...")
+            
+    if GEMINI_API_KEY:
+        return _call_gemini(prompt, max_retries=max_retries, is_json=is_json)
+        
+    raise RuntimeError("No AI API keys configured.")
 
 def _clean_json(raw: str) -> str:
     raw = raw.strip()

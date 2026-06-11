@@ -60,10 +60,7 @@ export default function AIAssistant() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [activeTab, setActiveTab] = useState('chat');
-  const [quizText, setQuizText] = useState('');
-  const [quizNumQ, setQuizNumQ] = useState(5);
-  const [quizQuestions, setQuizQuestions] = useState([]);
-  const [quizAnswers, setQuizAnswers] = useState({});
+
   const bottomRef    = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -158,19 +155,7 @@ export default function AIAssistant() {
     }
   };
 
-  const generateQuiz = async () => {
-    if (!quizText.trim() || loading) return;
-    setLoading(true);
-    try {
-      const qs = await api.generateFromText({ text: quizText, num_questions: parseInt(quizNumQ) });
-      setQuizQuestions(qs);
-      setQuizAnswers({});
-    } catch (err) {
-      alert(err.message || 'Failed to generate quiz');
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   return (
     <div className="page fade-in" style={{ maxWidth: 1400, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)', padding: '1.5rem' }}>
@@ -186,9 +171,6 @@ export default function AIAssistant() {
         </button>
         <button className={`btn ${activeTab === 'upload' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('upload')}>
           📎 Upload Image
-        </button>
-        <button className={`btn ${activeTab === 'quiz' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('quiz')}>
-          📝 Quiz Generator
         </button>
       </div>
 
@@ -281,69 +263,7 @@ export default function AIAssistant() {
         </div>
       )}
 
-      {/* Quiz Generator */}
-      {activeTab === 'quiz' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1, overflowY: 'auto' }}>
-          {quizQuestions.length === 0 ? (
-            <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Generate Practice Quiz</h3>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Paste any study notes, articles, or syllabus topics below, and the AI will generate a custom interactive quiz for you!</p>
-              <textarea 
-                placeholder="Paste your study material here..."
-                rows={6}
-                value={quizText}
-                onChange={e => setQuizText(e.target.value)}
-                style={{ width: '100%', padding: '1rem', borderRadius: '0.5rem', background: 'var(--bg-input)', color: 'white', border: '1px solid var(--border)', marginBottom: '1rem' }}
-              />
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <label style={{ color: 'var(--text-secondary)' }}>Number of Questions:</label>
-                <input type="number" min="1" max="20" value={quizNumQ} onChange={e => setQuizNumQ(e.target.value)} style={{ width: 80, marginBottom: 0 }} />
-                <button className="btn btn-primary" onClick={generateQuiz} disabled={loading || !quizText.trim()}>
-                  {loading ? '⏳ Generating...' : '✨ Generate Quiz'}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="card" style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                <h3>Interactive Practice Quiz</h3>
-                <button className="btn btn-secondary btn-sm" onClick={() => { setQuizQuestions([]); setQuizAnswers({}); }}>← Create New Quiz</button>
-              </div>
-              
-              {quizQuestions.map((q, i) => (
-                <div key={i} style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-                  <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}><strong>Q{i+1}:</strong> {q.text}</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {['A', 'B', 'C', 'D'].map(opt => (
-                      <button 
-                        key={opt}
-                        onClick={() => setQuizAnswers(prev => ({ ...prev, [i]: opt }))}
-                        style={{
-                          textAlign: 'left', padding: '0.8rem 1rem', borderRadius: '0.5rem', cursor: 'pointer',
-                          background: quizAnswers[i] === opt ? 'rgba(79,70,229,0.2)' : 'var(--bg-input)',
-                          border: `1px solid ${quizAnswers[i] === opt ? 'var(--primary)' : 'var(--border)'}`,
-                          color: 'white', display: 'flex', gap: '1rem'
-                        }}
-                      >
-                        <strong style={{ color: 'var(--accent)' }}>{opt}</strong>
-                        <span>{q[`option_${opt.toLowerCase()}`]}</span>
-                      </button>
-                    ))}
-                  </div>
-                  {quizAnswers[i] && (
-                    <div className="fade-in" style={{ marginTop: '1rem', padding: '1rem', borderRadius: '0.5rem', background: quizAnswers[i] === q.correct_option ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', borderLeft: `4px solid ${quizAnswers[i] === q.correct_option ? 'var(--success)' : 'var(--danger)'}` }}>
-                      <p style={{ fontWeight: 'bold', color: quizAnswers[i] === q.correct_option ? 'var(--success)' : 'var(--danger)', marginBottom: '0.5rem' }}>
-                        {quizAnswers[i] === q.correct_option ? '✅ Correct!' : `❌ Incorrect! The correct answer is ${q.correct_option}.`}
-                      </p>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{q.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+
     </div>
   );
 }

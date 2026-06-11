@@ -150,3 +150,14 @@ class Resource(Base):
     uploaded_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+class ResourceRequest(Base):
+    __tablename__ = "resource_requests"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    exam_type = Column(String, index=True)
+    subject = Column(String, default="")
+    topic = Column(String, default="")
+    message = Column(Text, default="")
+    status = Column(String, default="pending")  # pending, fulfilled
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    user = relationship("User")

@@ -126,6 +126,44 @@ def admin_list_resources(
     return [_resource_to_dict(r) for r in resources]
 
 
+@router.get("/requests")
+def admin_list_requests(
+    db: Session = Depends(get_db),
+    admin: models.User = Depends(get_current_admin),
+):
+    """Admin: list all material requests."""
+    requests = db.query(models.ResourceRequest).order_by(models.ResourceRequest.created_at.desc()).all()
+    res = []
+    for r in requests:
+        res.append({
+            "id": r.id,
+            "user_id": r.user_id,
+            "user_name": r.user.full_name or r.user.username,
+            "exam_type": r.exam_type,
+            "subject": r.subject,
+            "topic": r.topic,
+            "message": r.message,
+            "status": r.status,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+        })
+    return res
+
+
+@router.post("/requests/{req_id}/fulfill")
+def admin_fulfill_request(
+    req_id: int,
+    db: Session = Depends(get_db),
+    admin: models.User = Depends(get_current_admin),
+):
+    """Admin: mark a request as fulfilled."""
+    req = db.query(models.ResourceRequest).filter(models.ResourceRequest.id == req_id).first()
+    if not req:
+        raise HTTPException(status_code=404, detail="Request not found")
+    req.status = "fulfilled"
+    db.commit()
+    return {"message": "Request marked as fulfilled"}
+
+
 # ── Public / User endpoints (search & download) ──────────────────────────────
 
 @router.get("/public/resources")

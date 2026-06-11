@@ -198,6 +198,28 @@ class ResourceOut(BaseModel):
         from_attributes = True
 
 
+class ResourceRequestCreate(BaseModel):
+    exam_type: str
+    subject: Optional[str] = ""
+    topic: Optional[str] = ""
+    message: Optional[str] = ""
+
+
+class ResourceRequestOut(BaseModel):
+    id: int
+    user_id: int
+    exam_type: str
+    subject: str
+    topic: str
+    message: str
+    status: str
+    created_at: datetime
+    user_name: Optional[str] = ""
+
+    class Config:
+        from_attributes = True
+
+
 # ---------- AI ----------
 class AIExplainRequest(BaseModel):
     question_id: int

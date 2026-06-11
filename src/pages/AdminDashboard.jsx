@@ -4,7 +4,7 @@ import { api } from '../api/client';
 const FILE_TYPE_ICON = { PDF: '📄', Image: '🖼️', Video: '🎬', Document: '📝' };
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState('users'); // 'users' | 'resources'
+  const [tab, setTab] = useState('users'); // 'users' | 'resources' | 'requests'
 
   // ─── Users state ───────────────────────────────────────────────────────────
   const [users, setUsers] = useState([]);
@@ -22,6 +22,10 @@ export default function AdminDashboard() {
   const [uploading, setUploading] = useState(false);
   const [resSearch, setResSearch] = useState('');
   const fileInputRef = useRef(null);
+
+  // ─── Requests state ────────────────────────────────────────────────────────
+  const [requests, setRequests] = useState([]);
+  const [reqLoading, setReqLoading] = useState(false);
 
   const [actionMsg, setActionMsg] = useState('');
   const [error, setError] = useState('');
@@ -53,8 +57,14 @@ export default function AdminDashboard() {
     api.adminGetResourceExamTypes().then(setExamTypes).catch(() => {});
   }, []);
 
+  const loadRequests = () => {
+    setReqLoading(true);
+    api.adminGetRequests().then(setRequests).catch(console.error).finally(() => setReqLoading(false));
+  };
+
   useEffect(() => {
     if (tab === 'resources') loadResources();
+    if (tab === 'requests') loadRequests();
   }, [tab]);
 
   // ─── User actions ──────────────────────────────────────────────────────────
@@ -113,6 +123,15 @@ export default function AdminDashboard() {
     } catch (err) { showMsg(`❌ ${err.message}`); }
   };
 
+  const handleFulfillRequest = async (reqId) => {
+    if (!window.confirm("Mark this request as fulfilled?")) return;
+    try {
+      await api.adminFulfillRequest(reqId);
+      showMsg(`✅ Request marked as fulfilled`);
+      loadRequests();
+    } catch (err) { showMsg(`❌ ${err.message}`); }
+  };
+
   const filteredUsers = users.filter(u =>
     u.username.toLowerCase().includes(userSearch.toLowerCase()) ||
     u.email.toLowerCase().includes(userSearch.toLowerCase()) ||
@@ -151,6 +170,7 @@ export default function AdminDashboard() {
           { label: 'Active Users', value: stats.active, icon: '✅' },
           { label: 'Total Exams Taken', value: stats.totalExams, icon: '📝' },
           { label: 'Resources Uploaded', value: resources.length, icon: '📁' },
+          { label: 'Pending Requests', value: requests.filter(r => r.status === 'pending').length || 0, icon: '📬' },
         ].map((s, i) => (
           <div key={i} className="stat-card">
             <span style={{ fontSize: '2rem' }}>{s.icon}</span>
@@ -168,6 +188,7 @@ export default function AdminDashboard() {
         {[
           { key: 'users', label: '👥 Users' },
           { key: 'resources', label: '📁 Resources' },
+          { key: 'requests', label: '📬 Material Requests' },
         ].map(t => (
           <button
             key={t.key}
@@ -427,6 +448,53 @@ export default function AdminDashboard() {
             )}
           </div>
         </>
+      )}
+      {/* ── REQUESTS TAB ── */}
+      {tab === 'requests' && (
+        <div className="card">
+          <h3 style={{ marginBottom: '1.5rem' }}>📬 User Material Requests</h3>
+          {reqLoading ? (
+            <div className="loader"><div className="spinner"></div></div>
+          ) : requests.length === 0 ? (
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem' }}>No material requests found.</p>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table>
+                <thead><tr>
+                  <th>User</th><th>Exam</th><th>Subject/Topic</th><th>Message</th><th>Date</th><th>Status</th><th>Action</th>
+                </tr></thead>
+                <tbody>
+                  {requests.map(r => (
+                    <tr key={r.id}>
+                      <td><div style={{ fontWeight: 600 }}>{r.user_name}</div></td>
+                      <td><div style={{ fontWeight: 600, color: 'var(--accent)' }}>{r.exam_type}</div></td>
+                      <td>
+                        <div style={{ fontSize: '0.85rem' }}>{r.subject || '—'}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{r.topic}</div>
+                      </td>
+                      <td style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{r.message || '—'}</td>
+                      <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                        {r.created_at ? new Date(r.created_at).toLocaleDateString() : '—'}
+                      </td>
+                      <td>
+                        <span className={`badge ${r.status === 'fulfilled' ? 'badge-success' : 'badge-warning'}`}>
+                          {r.status}
+                        </span>
+                      </td>
+                      <td>
+                        {r.status === 'pending' && (
+                          <button className="btn btn-primary btn-sm" onClick={() => handleFulfillRequest(r.id)}>
+                            ✅ Mark Fulfilled
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
