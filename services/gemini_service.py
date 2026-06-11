@@ -135,8 +135,9 @@ def generate_questions(exam_key: str, display_name: str, pattern_summary: str,
     seen_texts: set[str] = set()
     num_batches = (num_questions + BATCH - 1) // BATCH
 
-    # Use Groq for 30 or less, Gemini Multithreading for massive exams
-    use_groq = (num_questions <= 30)
+    # Use Groq for 50 or less, Gemini Multithreaded for massive exams
+    has_gemini = bool(GEMINI_API_KEY and GEMINI_API_KEY.strip())
+    use_groq = (num_questions <= 50) or not has_gemini
     engine_name = "Groq" if use_groq else "Gemini Multithreaded"
 
     def generate_batch(batch_idx):
