@@ -9,76 +9,71 @@ import re
 import time
 from google import genai
 from google.genai import types
+from groq import Groq
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-
-# Try newest model first, fall back to older/higher-quota models
-MODELS = [
-    "gemini-2.5-flash",
-    "gemini-2.5-pro",
-    "gemini-2.0-flash",
-]
-
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
 def get_client():
     if not GEMINI_API_KEY:
-        raise RuntimeError(
-            "GEMINI_API_KEY not set. "
-            "Get a free key at https://aistudio.google.com/app/apikey "
-            "and add it to .env as: GEMINI_API_KEY=your_key"
-        )
+        raise RuntimeError("GEMINI_API_KEY not set.")
     return genai.Client(api_key=GEMINI_API_KEY)
 
+def get_groq_client():
+    if not GROQ_API_KEY:
+        raise RuntimeError("GROQ_API_KEY not set.")
+    return Groq(api_key=GROQ_API_KEY)
 
 def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
     """
-    Call Gemini with Fast Quota Switching and High Persistence.
-    Tries ALL models in MODELS list for each attempt.
-    Increased to 5 attempts (total 10+ calls) to ensure success for AI-only mode.
+    Call Groq (Llama 3) for lightning-fast text generation.
+    Falls back to smaller models if rate limited.
     """
-    client = get_client()
+    client = get_groq_client()
     last_err = None
-    delays = [2, 4, 8, 16, 32]  # Increased backoff for AI-only mode
+    delays = [1, 2, 4, 8]
+    
+    # Groq JSON mode requires the prompt to explicitly contain the word "JSON"
+    if is_json and "json" not in prompt.lower():
+        prompt += "\nReturn output in JSON format."
+
+    models_to_try = [
+        "llama-3.3-70b-versatile",
+        "llama3-8b-8192"
+    ]
 
     for attempt in range(max_retries):
-        for model in MODELS:
+        for model in models_to_try:
             try:
-                config = types.GenerateContentConfig(
-                    temperature=0.7,
-                    max_output_tokens=8192,
-                )
+                kwargs = {
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.7,
+                    "max_tokens": 8000,
+                }
                 if is_json:
-                    config.response_mime_type = "application/json"
-
-                response = client.models.generate_content(
-                    model=model,
-                    contents=prompt,
-                    config=config,
-                )
-                text = response.text
+                    kwargs["response_format"] = {"type": "json_object"}
+                    
+                chat_completion = client.chat.completions.create(**kwargs)
+                text = chat_completion.choices[0].message.content
                 if text:
                     return text
             except Exception as e:
                 last_err = e
                 err_str = str(e).lower()
-                is_rate = any(k in err_str for k in ("429", "quota", "rate", "resource_exhausted", "too many"))
-                is_unavail = any(k in err_str for k in ("503", "overloaded", "unavailable", "500"))
-
-                if is_rate or is_unavail:
-                    print(f"[Gemini:{model}] Busy/Limit. Switching model...")
+                if "rate limit" in err_str or "429" in err_str or "503" in err_str:
+                    print(f"[Groq:{model}] Rate limit/Busy. Switching model...")
                     continue
                 else:
-                    print(f"[Gemini:{model}] Error: {e}")
+                    print(f"[Groq:{model}] Error: {e}")
                     continue
-
-        # If we reach here, all models failed in this attempt
-        if attempt < max_retries - 1:
-            wait = delays[min(attempt, len(delays) - 1)]
-            print(f"[AI] All models busy. Waiting {wait}s before retry cycle {attempt+2}/{max_retries}...")
-            time.sleep(wait)
-
-    raise RuntimeError(f"All models failed after {max_retries} full cycles. Last error: {last_err}")
-
+                    
+        # All models failed in this cycle
+        wait = delays[min(attempt, len(delays)-1)]
+        print(f"[Groq] All models busy. Waiting {wait}s...")
+        time.sleep(wait)
+                
+    raise RuntimeError(f"Groq generation failed after {max_retries} attempts. Last error: {last_err}")
 
 def _clean_json(raw: str) -> str:
     raw = raw.strip()

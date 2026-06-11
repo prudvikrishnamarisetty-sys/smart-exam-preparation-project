@@ -97,13 +97,6 @@ def _ai_generate(config: models.ExamConfig, num_q: int, db: Session) -> list:
 
     if len(ai_questions) < num_q:
         print(f"[AI-Only] Shortfall: {len(ai_questions)}/{num_q} generated.")
-        # We still return what we have, but if it's too few, the app should know.
-        # To strictly enforce AI-only, we could raise error here too.
-        if len(ai_questions) < (num_q * 0.8): # Fail if less than 80% generated
-             raise HTTPException(
-                status_code=503, 
-                detail=f"AI could only generate {len(ai_questions)} out of {num_q} questions. Please retry for a full AI set."
-            )
 
     return ai_questions[:num_q]
 
@@ -125,8 +118,15 @@ def start_exam(
     # === AI generates questions in real-time ===
     ai_questions = _ai_generate(config, num_q, db)
 
+    # Pad with DB questions if AI fell short
+    if len(ai_questions) < num_q:
+        needed = num_q - len(ai_questions)
+        exclude_texts = {q.get("text") for q in ai_questions}
+        fallback_qs = _db_questions(config, needed, db, exclude_texts)
+        ai_questions.extend(fallback_qs)
+
     if not ai_questions:
-        raise HTTPException(status_code=500, detail="AI returned no questions. Try again.")
+        raise HTTPException(status_code=500, detail="Failed to generate any questions. Try again.")
 
     # Create exam record
     exam = models.Exam(

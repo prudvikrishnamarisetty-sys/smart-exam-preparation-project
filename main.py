@@ -102,11 +102,35 @@ def auto_seed_if_empty():
     finally:
         db.close()
 
+async def database_heartbeat():
+    """Background task to ping the database periodically and prevent it from sleeping (e.g., Aiven free tier)."""
+    import asyncio
+    from database import SessionLocal
+    from sqlalchemy import text
+    while True:
+        try:
+            db = SessionLocal()
+            db.execute(text("SELECT 1"))
+            db.commit()
+            db.close()
+        except Exception as e:
+            print(f"[Heartbeat] Error: {e}")
+        # Sleep for 4 minutes (240 seconds)
+        await asyncio.sleep(240)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     seed_admin()
     auto_seed_if_empty()
+    
+    # Start heartbeat task
+    import asyncio
+    heartbeat_task = asyncio.create_task(database_heartbeat())
+    
     yield
+    
+    # Cancel task on shutdown
+    heartbeat_task.cancel()
 
 
 app = FastAPI(
