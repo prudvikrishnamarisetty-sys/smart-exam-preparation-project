@@ -20,11 +20,11 @@ function ResourceCard({ resource }) {
         <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>{icons[resource.file_type] || '📎'}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>{resource.title}</div>
-          {(resource.exam_name || resource.exam_type) && (
+          {(resource.exam_name || resource.exam_type || resource.subject || 'General') && (
             <span style={{
               display: 'inline-block', fontSize: '0.72rem', background: 'rgba(56,189,248,0.12)',
               color: 'var(--accent)', padding: '0.15rem 0.45rem', borderRadius: '0.3rem', margin: '0.25rem 0',
-            }}>{resource.exam_name || resource.exam_type}</span>
+            }}>{resource.exam_name || resource.exam_type || 'General Material'}</span>
           )}
           {resource.subject && <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>📚 {resource.subject}</div>}
 

@@ -107,7 +107,9 @@ export default function AIAssistant() {
         else next.push(finalMsg);
         return next;
       });
-      setCachedResponse(userMsg, res);
+      if (!res.response.includes('Temporarily Busy') && !res.response.includes('Error:')) {
+        setCachedResponse(userMsg, res);
+      }
     } catch (err) {
       setMessages(prev => {
         const next = [...prev];
