@@ -487,3 +487,39 @@ Return a JSON object with: step1_restatement, step2_concepts, step3_working, ste
             "step4_answer": f"**Final Answer: {correct_option}**",
             "step5_similar": [],
         }
+
+
+def generate_questions_from_text(text: str, num_questions: int, exam_type: str = "General") -> list[dict]:
+    """Generate ad-hoc questions from arbitrary text for practice without storing them."""
+    prompt = f"""You are an expert examiner for {exam_type}.
+Based on the following source material provided by the student, generate exactly {num_questions} Multiple Choice Questions.
+
+Source Material:
+\"\"\"{text}\"\"\"
+
+Ensure the questions strictly test the concepts mentioned in the text.
+Return a JSON array of objects, where each object has:
+- text: The question text
+- option_a, option_b, option_c, option_d: The four options
+- correct_option: The correct option letter (A, B, C, or D)
+- explanation: A brief explanation of why the answer is correct based on the text.
+- subject: A short topic string derived from the text.
+
+Only return the JSON array."""
+    try:
+        raw = _call(prompt, is_json=True, max_retries=2)
+        questions = json.loads(raw)
+        if isinstance(questions, list):
+            # Normalize correct_option to A/B/C/D
+            for q in questions:
+                cop = str(q.get("correct_option", "")).strip().upper()
+                if "A" in cop: q["correct_option"] = "A"
+                elif "B" in cop: q["correct_option"] = "B"
+                elif "C" in cop: q["correct_option"] = "C"
+                elif "D" in cop: q["correct_option"] = "D"
+                else: q["correct_option"] = "A"
+            return questions
+        return []
+    except Exception as e:
+        print(f"[generate_questions_from_text] Failed: {e}")
+        return []

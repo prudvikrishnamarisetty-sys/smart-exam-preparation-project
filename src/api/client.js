@@ -84,4 +84,5 @@ export const api = {
   askAI: (data) => request('/ai/ask', { method: 'POST', body: JSON.stringify(data) }),
   aiChat: (data) => request('/ai/chat', { method: 'POST', body: JSON.stringify(data) }),
   analyzeMedia: (formData) => multipartRequest('/ai/analyze-media', formData),
+  generateFromText: (data) => request('/ai/generate-from-text', { method: 'POST', body: JSON.stringify(data) }),
 };

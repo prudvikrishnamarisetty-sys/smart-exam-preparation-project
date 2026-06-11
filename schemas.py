@@ -220,3 +220,9 @@ class AIExplainResponse(BaseModel):
 class AIChatResponse(BaseModel):
     response: str
     follow_up_questions: List[str]
+
+
+class AIGenerateFromTextRequest(BaseModel):
+    text: str
+    num_questions: Optional[int] = 5
+    exam_type: Optional[str] = "General"

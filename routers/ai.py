@@ -152,3 +152,34 @@ async def analyze_media(
             "questions_found": 0,
             "follow_up_questions": ["Try again in a moment", "Ask a text question instead"],
         }
+
+
+@router.post("/generate-from-text")
+def generate_from_text(
+    req: schemas.AIGenerateFromTextRequest,
+    current_user: models.User = Depends(get_current_user),
+):
+    """
+    Generate ad-hoc practice MCQs from a given text or topic.
+    Returns a list of question objects.
+    """
+    if not req.text.strip():
+        raise HTTPException(status_code=400, detail="Text cannot be empty.")
+    if req.num_questions < 1 or req.num_questions > 20:
+        raise HTTPException(status_code=400, detail="Number of questions must be between 1 and 20.")
+
+    try:
+        from services.gemini_service import generate_questions_from_text
+        questions = generate_questions_from_text(
+            text=req.text,
+            num_questions=req.num_questions,
+            exam_type=req.exam_type or "General"
+        )
+        if not questions:
+            raise HTTPException(status_code=503, detail="AI could not generate questions. Try rewording your text.")
+        return questions
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[/ai/generate-from-text] Failed: {e}")
+        raise HTTPException(status_code=500, detail="Internal AI error. Please try again.")
