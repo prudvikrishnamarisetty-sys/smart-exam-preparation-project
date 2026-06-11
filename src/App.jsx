@@ -18,7 +18,7 @@ function Navbar({ user, onLogout }) {
   const location = useLocation();
   const isActive = (path) => location.pathname === path ? 'active' : '';
   // Hide navbar on admin login page and exam interface
-  if (location.pathname === '/admin/login') return null;
+  if (location.pathname === '/admin/login' || location.pathname.startsWith('/exam/')) return null;
 
   return (
     <nav className="navbar">

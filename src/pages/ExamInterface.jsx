@@ -177,11 +177,18 @@ export default function ExamInterface() {
     <div className="exam-wrapper fade-in">
       {/* Sticky Header */}
       <div className="exam-header">
-        <div>
-          <strong>{exam.exam_type?.replace(/_/g, ' ')}</strong>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginLeft: '0.75rem' }}>
-            Q {currentQ + 1} / {questions.length}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button className="btn btn-secondary btn-sm" onClick={() => {
+            if (window.confirm('Are you sure you want to exit? Your progress will not be saved unless you submit.')) {
+              navigate('/exams');
+            }
+          }}>← Back</button>
+          <div>
+            <strong>{exam.exam_type?.replace(/_/g, ' ')}</strong>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginLeft: '0.75rem' }}>
+              Q {currentQ + 1} / {questions.length}
+            </span>
+          </div>
         </div>
         <div className={timerCls}>{String(mins).padStart(2, '0')}:{String(secs).padStart(2, '0')}</div>
         <button className="btn btn-danger btn-sm" onClick={() => handleSubmit(false)} disabled={submitting}>

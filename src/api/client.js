@@ -1,4 +1,4 @@
-const API = 'https://prudvi2004-smart-exam-backend.hf.space/api';
+const API = import.meta.env.VITE_API_URL || 'https://prudvi2004-smart-exam-backend.hf.space/api';
 
 function getToken() { return localStorage.getItem('token'); }
 
