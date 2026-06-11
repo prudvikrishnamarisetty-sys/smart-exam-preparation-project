@@ -199,9 +199,13 @@ Return a JSON array of objects with keys: text, option_a, option_b, option_c, op
     workers = 1 if use_groq else 5
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         futures = [executor.submit(generate_batch, i) for i in range(num_batches)]
-        for future in concurrent.futures.as_completed(futures):
-            batch_qs = future.result()
-            all_valid.extend(batch_qs)
+        try:
+            # Hugging Face times out at 60s. We enforce a 45s hard stop to guarantee a clean response.
+            for future in concurrent.futures.as_completed(futures, timeout=45.0):
+                batch_qs = future.result()
+                all_valid.extend(batch_qs)
+        except concurrent.futures.TimeoutError:
+            print(f"[generate_questions] 45s hard timeout reached! Returning partial exam ({len(all_valid)} questions) to prevent 504 error.")
 
     return all_valid[:num_questions]
 
