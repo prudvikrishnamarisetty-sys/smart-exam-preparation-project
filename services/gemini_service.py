@@ -24,7 +24,7 @@ def get_groq_client():
         raise RuntimeError("GROQ_API_KEY not set.")
     return Groq(api_key=GROQ_API_KEY)
 
-def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
+def _call_groq(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
     """
     Call Groq (Llama 3) for lightning-fast text generation.
     Falls back to smaller models if rate limited.
@@ -33,7 +33,6 @@ def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
     last_err = None
     delays = [1, 2, 4, 8]
     
-    # Groq JSON mode requires the prompt to explicitly contain the word "JSON"
     if is_json and "json" not in prompt.lower():
         prompt += "\nReturn output in JSON format."
 
@@ -68,12 +67,47 @@ def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
                     print(f"[Groq:{model}] Error: {e}")
                     continue
                     
-        # All models failed in this cycle
         wait = delays[min(attempt, len(delays)-1)]
         print(f"[Groq] All models busy. Waiting {wait}s...")
         time.sleep(wait)
                 
     raise RuntimeError(f"Groq generation failed after {max_retries} attempts. Last error: {last_err}")
+
+def _call_gemini(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
+    """
+    Call Gemini with high persistence for massive parallel processing.
+    """
+    client = get_client()
+    last_err = None
+    delays = [2, 4, 8, 16]
+    models = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"]
+
+    for attempt in range(max_retries):
+        for model in models:
+            try:
+                config = types.GenerateContentConfig(temperature=0.7, max_output_tokens=8192)
+                if is_json:
+                    config.response_mime_type = "application/json"
+
+                response = client.models.generate_content(model=model, contents=prompt, config=config)
+                if response.text:
+                    return response.text
+            except Exception as e:
+                last_err = e
+                err_str = str(e).lower()
+                if any(k in err_str for k in ("429", "quota", "rate", "503")):
+                    continue
+                continue
+
+        wait = delays[min(attempt, len(delays) - 1)]
+        print(f"[Gemini] All models busy. Waiting {wait}s...")
+        time.sleep(wait)
+
+    raise RuntimeError(f"Gemini generation failed. Last error: {last_err}")
+
+def _call(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
+    """Default text engine: uses Groq for speed."""
+    return _call_groq(prompt, max_retries, is_json)
 
 def _clean_json(raw: str) -> str:
     raw = raw.strip()
@@ -96,17 +130,21 @@ def generate_questions(exam_key: str, display_name: str, pattern_summary: str,
             for s in sections
         )
 
-    BATCH = 10
+    BATCH = 30
     all_valid: list[dict] = []
     seen_texts: set[str] = set()
     num_batches = (num_questions + BATCH - 1) // BATCH
+
+    # Use Groq for 30 or less, Gemini Multithreading for massive exams
+    use_groq = (num_questions <= 30)
+    engine_name = "Groq" if use_groq else "Gemini Multithreaded"
 
     def generate_batch(batch_idx):
         target_count = min(BATCH, num_questions - batch_idx * BATCH)
         diversity_hint = f"\nIMPORTANT: This is batch {batch_idx+1}. Ensure maximum diversity of topics, sections, and difficulty levels."
         
         batch_results = []
-        max_batch_retries = 5 # Higher persistence to ensure 100% AI generation
+        max_batch_retries = 5 
         
         for attempt in range(max_batch_retries):
             needed_in_batch = target_count - len(batch_results)
@@ -121,7 +159,7 @@ Generate EXACTLY {needed_in_batch} unique MCQ questions strictly following the s
 
 Return a JSON array of objects with keys: text, option_a, option_b, option_c, option_d, correct_option, subject, section, topic, difficulty, marks_per_question, negative_marks."""
             try:
-                raw = _call(prompt, is_json=True, max_retries=2) 
+                raw = _call_groq(prompt, is_json=True, max_retries=2) if use_groq else _call_gemini(prompt, is_json=True, max_retries=3)
                 questions = json.loads(raw)
                 if not isinstance(questions, list):
                     continue
@@ -132,45 +170,33 @@ Return a JSON array of objects with keys: text, option_a, option_b, option_c, op
                     if "question" in q and "text" not in q: q["text"] = q.pop("question")
                     elif "question_text" in q and "text" not in q: q["text"] = q.pop("question_text")
                     
-                    # Normalize correct_option to A, B, C, or D (handles 'option_a', 'a', etc.)
                     cop = str(q.get("correct_option", "")).strip().upper()
-                    if "A" in cop or cop == "OPTION_A":
-                        q["correct_option"] = "A"
-                    elif "B" in cop or cop == "OPTION_B":
-                        q["correct_option"] = "B"
-                    elif "C" in cop or cop == "OPTION_C":
-                        q["correct_option"] = "C"
-                    elif "D" in cop or cop == "OPTION_D":
-                        q["correct_option"] = "D"
-                    else:
-                        # Fallback default if parsing fails
-                        q["correct_option"] = "A"
+                    if "A" in cop or cop == "OPTION_A": q["correct_option"] = "A"
+                    elif "B" in cop or cop == "OPTION_B": q["correct_option"] = "B"
+                    elif "C" in cop or cop == "OPTION_C": q["correct_option"] = "C"
+                    elif "D" in cop or cop == "OPTION_D": q["correct_option"] = "D"
+                    else: q["correct_option"] = "A"
 
                     required = {"text", "option_a", "option_b", "option_c", "option_d", "correct_option"}
                     text = str(q.get("text", "")).strip()
-                    if (
-                        required.issubset(q.keys())
-                        and len(text) > 15
-                        and text not in seen_texts
-                        and not text.lower().startswith("fallback")
-                    ):
+                    if required.issubset(q.keys()) and len(text) > 15 and text not in seen_texts and not text.lower().startswith("fallback"):
                         seen_texts.add(text)
                         batch_results.append(q)
                 
                 if len(batch_results) >= target_count:
                     break
                 else:
-                    print(f"[AI:Batch{batch_idx+1}] Partial batch: {len(batch_results)}/{target_count}. Retrying...")
+                    print(f"[{engine_name}:Batch{batch_idx+1}] Partial batch: {len(batch_results)}/{target_count}. Retrying...")
             except Exception as e:
-                print(f"[AI:Batch{batch_idx+1}] Attempt {attempt+1} failed: {e}. Retrying...")
-                time.sleep(2)
+                print(f"[{engine_name}:Batch{batch_idx+1}] Attempt {attempt+1} failed: {e}. Retrying...")
+                time.sleep(1)
                 
         return batch_results
 
-    print(f"[generate_questions] Enforcing 100% AI generation for {num_questions} questions.")
+    print(f"[generate_questions] Generating {num_questions} questions via {engine_name}")
     
-    # Still use serial to avoid hitting RPM limits immediately
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    workers = 1 if use_groq else 5
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         futures = [executor.submit(generate_batch, i) for i in range(num_batches)]
         for future in concurrent.futures.as_completed(futures):
             batch_qs = future.result()

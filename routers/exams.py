@@ -118,11 +118,9 @@ def start_exam(
     # === AI generates questions in real-time ===
     ai_questions = _ai_generate(config, num_q, db)
 
-    # Pad with DB questions if AI fell short
-    if len(ai_questions) < num_q:
-        needed = num_q - len(ai_questions)
-        exclude_texts = {q.get("text") for q in ai_questions}
-        fallback_qs = _db_questions(config, needed, db, exclude_texts)
+    # Pad with DB questions ONLY if AI completely failed to generate anything
+    if len(ai_questions) == 0:
+        fallback_qs = _db_questions(config, num_q, db, set())
         ai_questions.extend(fallback_qs)
 
     if not ai_questions:
