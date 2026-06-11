@@ -38,7 +38,7 @@ def _call_groq(prompt: str, max_retries: int = 5, is_json: bool = False) -> str:
 
     models_to_try = [
         "llama-3.3-70b-versatile",
-        "llama3-8b-8192"
+        "llama-3.1-8b-instant"
     ]
 
     for attempt in range(max_retries):
